@@ -7,10 +7,12 @@
 ## 内容
 
 - `proto/`：config / account / account_risk
-- `src/qtrade/service/`：三个支撑服务实现
-- `src/qtrade/client/`：gRPC 薄客户端
-- `src/qtrade/bridge/`：`GrpcConfigBridge` / `GrpcAccountBridge` / `GrpcAccountRiskBridge`
-- `apps/`：三个 `*_service` 可执行文件
+- `src/qtrade_service/service/`：三个支撑服务实现
+- `src/qtrade_service/client/`：gRPC 薄客户端
+- `src/qtrade_service/bridge/`：`GrpcConfigBridge` / `GrpcAccountBridge` / `GrpcAccountRiskBridge`
+- `src/qtrade_service/apps/`：三个 `*_service` 可执行文件入口
+
+公开 `#include` 仍为 `qtrade/...`（构建期 overlay；安装到 `include/qtrade/`）。
 
 ## 构建顺序
 

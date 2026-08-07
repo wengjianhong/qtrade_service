@@ -1,2 +1,0 @@
-/usr/bin/ar qc libqtrade_config_service_static.a CMakeFiles/qtrade_config_service_static.dir/src/qtrade/service/config_service/config_service.cpp.o CMakeFiles/qtrade_config_service_static.dir/src/qtrade/service/config_service/grpc/config_grpc_async_handler.cpp.o CMakeFiles/qtrade_config_service_static.dir/src/qtrade/service/config_service/grpc/config_scope.cpp.o
-/usr/bin/ranlib libqtrade_config_service_static.a

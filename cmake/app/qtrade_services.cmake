@@ -13,7 +13,7 @@ function(qtrade_service_add_support_service executable_name service_impl_dir)
 
   add_library(${static_target} STATIC ${_svc_src})
   target_include_directories(${static_target}
-    PUBLIC ${QTRADE_SERVICE_SRC_DIR}
+    PUBLIC ${QTRADE_SERVICE_INCLUDE_OVERLAY_DIR}
     PRIVATE ${QTRADE_SERVICE_INCLUDE_DIR}
   )
   target_link_libraries(${static_target} PUBLIC qtrade_service_common)

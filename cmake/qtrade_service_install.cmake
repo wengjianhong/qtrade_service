@@ -27,7 +27,8 @@ install(DIRECTORY ${PROJECT_SOURCE_DIR}/include/qtrade/
   DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/qtrade
 )
 
-# Bridge / client / 下游编译所需的 service 侧头文件（不覆盖 qtrade 的 common/boot 等）
+# Bridge / client / 下游编译所需的 service 侧头文件（不覆盖 qtrade_engine 的 common/boot 等）
+# 物理源在 src/qtrade_service/，安装后仍为 include/qtrade/...
 install(DIRECTORY ${QTRADE_SERVICE_SRC_QTRADE_DIR}/bridge/
   DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/qtrade/bridge
   FILES_MATCHING PATTERN "*.hpp" PATTERN "*.h"

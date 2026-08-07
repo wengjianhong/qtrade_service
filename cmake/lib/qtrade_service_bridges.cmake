@@ -13,7 +13,7 @@ list(FILTER QTRADE_SERVICE_BRIDGE_STATIC_SRC EXCLUDE REGEX "grpc_bridge_plugin\\
 add_library(qtrade_service_bridges STATIC ${QTRADE_SERVICE_BRIDGE_STATIC_SRC})
 
 target_include_directories(qtrade_service_bridges PUBLIC
-  $<BUILD_INTERFACE:${QTRADE_SERVICE_SRC_DIR}>
+  $<BUILD_INTERFACE:${QTRADE_SERVICE_INCLUDE_OVERLAY_DIR}>
   $<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}>
 )
 
@@ -26,7 +26,7 @@ add_library(qtrade_bridge_grpc MODULE
   ${QTRADE_SERVICE_SRC_QTRADE_DIR}/bridge/grpc_bridge_plugin.cpp
 )
 target_include_directories(qtrade_bridge_grpc PRIVATE
-  ${QTRADE_SERVICE_SRC_DIR}
+  ${QTRADE_SERVICE_INCLUDE_OVERLAY_DIR}
 )
 target_link_libraries(qtrade_bridge_grpc PRIVATE
   qtrade_service_bridges

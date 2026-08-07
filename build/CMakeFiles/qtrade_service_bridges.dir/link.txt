@@ -1,2 +1,0 @@
-/usr/bin/ar qc libqtrade_service_bridges.a CMakeFiles/qtrade_service_bridges.dir/src/qtrade/bridge/grpc_account_bridge.cpp.o CMakeFiles/qtrade_service_bridges.dir/src/qtrade/bridge/grpc_account_risk_bridge.cpp.o CMakeFiles/qtrade_service_bridges.dir/src/qtrade/bridge/grpc_config_bridge.cpp.o
-/usr/bin/ranlib libqtrade_service_bridges.a
