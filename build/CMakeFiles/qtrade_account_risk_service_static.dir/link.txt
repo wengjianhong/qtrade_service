@@ -1,0 +1,2 @@
+/usr/bin/ar qc libqtrade_account_risk_service_static.a CMakeFiles/qtrade_account_risk_service_static.dir/src/qtrade/service/account_risk_service/account_risk_service.cpp.o CMakeFiles/qtrade_account_risk_service_static.dir/src/qtrade/service/account_risk_service/grpc/account_risk_grpc_service.cpp.o
+/usr/bin/ranlib libqtrade_account_risk_service_static.a

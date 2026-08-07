@@ -1,0 +1,2 @@
+/usr/bin/ar qc libqtrade_service_client.a CMakeFiles/qtrade_service_client.dir/src/qtrade/client/account_client/account_client.cpp.o CMakeFiles/qtrade_service_client.dir/src/qtrade/client/account_risk_client/account_risk_client.cpp.o CMakeFiles/qtrade_service_client.dir/src/qtrade/client/config_client/config_client.cpp.o
+/usr/bin/ranlib libqtrade_service_client.a

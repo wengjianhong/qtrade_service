@@ -1,0 +1,5 @@
+if(EXISTS "/home/wengjianhong/GitSpace/qtrade_service/build/test/qtrade_service_tests[1]_tests.cmake")
+  include("/home/wengjianhong/GitSpace/qtrade_service/build/test/qtrade_service_tests[1]_tests.cmake")
+else()
+  add_test(qtrade_service_tests_NOT_BUILT qtrade_service_tests_NOT_BUILT)
+endif()
