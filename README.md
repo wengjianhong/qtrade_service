@@ -1,18 +1,17 @@
 # qtrade_service
 
-支撑微服务与引擎侧 gRPC 桥接实现。**依赖**已安装的 `qtrade_engine`（`find_package(qtrade_engine)`）；`qtrade_engine` **不**依赖本仓库。
+支撑微服务与 protobuf/gRPC 生成库。**依赖**已安装的 `qtrade_engine`（`find_package(qtrade_engine)`）；`qtrade_engine` **不**依赖本仓库。
 
-交易引擎进程见独立仓库 **qtrade_client**；策略插件见 **qtrade_strategy**。
+交易引擎进程与 gRPC 接入实现（薄客户端 / `Grpc*Bridge`）见独立仓库 **qtrade_client**；策略插件见 **qtrade_strategy**。
 
 ## 内容
 
 - `proto/`：config / account / account_risk
 - `src/qtrade_service/service/`：三个支撑服务实现
-- `src/qtrade_service/client/`：gRPC 薄客户端
-- `src/qtrade_service/bridge/`：`GrpcConfigBridge` / `GrpcAccountBridge` / `GrpcAccountRiskBridge`
 - `src/qtrade_service/apps/`：三个 `*_service` 可执行文件入口
+- 安装库：`libqtrade_service_proto.a`（及服务侧 `libqtrade_service_common.a`）
 
-公开 `#include` 仍为 `qtrade/...`（构建期 overlay；安装到 `include/qtrade/`）。
+公开 `#include` 仍为 `qtrade/...`（构建期 overlay；proto 头安装到 `include/qtrade/proto/`）。
 
 ## 构建顺序
 

@@ -35,8 +35,6 @@ set(QTRADE_INCLUDE_FROM_ROOT FALSE)
 include(${CMAKE_CURRENT_SOURCE_DIR}/cmake/qtrade_service_paths.cmake)
 include(${CMAKE_CURRENT_SOURCE_DIR}/cmake/lib/qtrade_service_proto.cmake)
 include(${CMAKE_CURRENT_SOURCE_DIR}/cmake/lib/qtrade_service_common.cmake)
-include(${CMAKE_CURRENT_SOURCE_DIR}/cmake/lib/qtrade_service_client.cmake)
-include(${CMAKE_CURRENT_SOURCE_DIR}/cmake/lib/qtrade_service_bridges.cmake)
 include(${CMAKE_CURRENT_SOURCE_DIR}/cmake/app/qtrade_services.cmake)
 
 if(QTRADE_SERVICE_STANDALONE)
