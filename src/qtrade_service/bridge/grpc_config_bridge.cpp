@@ -15,10 +15,10 @@ GrpcConfigBridge::GrpcConfigBridge(qtrade::common::config::ServiceConfig service
   : service_config_(std::move(service_config)), engine_id_(std::move(engine_id)) {}
 
 GrpcConfigBridge::~GrpcConfigBridge() {
-  Stop();
+  Shutdown();
 }
 
-ErrorCode GrpcConfigBridge::Start() {
+ErrorCode GrpcConfigBridge::Init() {
   qtrade::client::ConfigClientOptions options;
   options.service_config = service_config_;
   if (const auto rc = client_.Init(options); rc != ErrorCode::kSuccess) {
@@ -51,7 +51,7 @@ ErrorCode GrpcConfigBridge::Start() {
   return ErrorCode::kSuccess;
 }
 
-void GrpcConfigBridge::Stop() {
+void GrpcConfigBridge::Shutdown() {
   client_.Shutdown();
 }
 

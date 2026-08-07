@@ -13,16 +13,16 @@ GrpcAccountRiskBridge::GrpcAccountRiskBridge(qtrade::common::config::ServiceConf
   : service_config_(std::move(service_config)) {}
 
 GrpcAccountRiskBridge::~GrpcAccountRiskBridge() {
-  Stop();
+  Shutdown();
 }
 
-ErrorCode GrpcAccountRiskBridge::Start() {
+ErrorCode GrpcAccountRiskBridge::Init() {
   qtrade::client::AccountRiskClientOptions options;
   options.service_config = service_config_;
   return client_.Init(options);
 }
 
-void GrpcAccountRiskBridge::Stop() {
+void GrpcAccountRiskBridge::Shutdown() {
   client_.Shutdown();
 }
 

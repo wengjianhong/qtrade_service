@@ -17,6 +17,7 @@
 
 namespace qtrade::bridge {
 
+/// @brief 经 AccountClient 取凭证；以 IAccountBridge 注入引擎前须先 Init()
 class GrpcAccountBridge final : public qtrade::account::IAccountBridge {
  public:
   explicit GrpcAccountBridge(qtrade::common::config::ServiceConfig service_config);
@@ -25,8 +26,11 @@ class GrpcAccountBridge final : public qtrade::account::IAccountBridge {
   GrpcAccountBridge(const GrpcAccountBridge&) = delete;
   GrpcAccountBridge& operator=(const GrpcAccountBridge&) = delete;
 
-  ErrorCode Start() override;
-  void Stop() override;
+  /// @brief 初始化 gRPC client；注入引擎前调用
+  ErrorCode Init();
+
+  /// @brief 关闭 client；可重复调用
+  void Shutdown();
 
   Result<qtrade::account::CredentialMaterial> GetCredential(const std::string& tenant_id,
                                                             const std::string& account_id,

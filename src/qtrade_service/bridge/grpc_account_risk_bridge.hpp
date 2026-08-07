@@ -17,6 +17,7 @@
 
 namespace qtrade::bridge {
 
+/// @brief 经 AccountRiskClient 做硬风控；以 IAccountRiskBridge 注入引擎前须先 Init()
 class GrpcAccountRiskBridge final : public qtrade::account_risk::IAccountRiskBridge {
  public:
   explicit GrpcAccountRiskBridge(qtrade::common::config::ServiceConfig service_config);
@@ -25,8 +26,11 @@ class GrpcAccountRiskBridge final : public qtrade::account_risk::IAccountRiskBri
   GrpcAccountRiskBridge(const GrpcAccountRiskBridge&) = delete;
   GrpcAccountRiskBridge& operator=(const GrpcAccountRiskBridge&) = delete;
 
-  ErrorCode Start() override;
-  void Stop() override;
+  /// @brief 初始化 gRPC client；注入引擎前调用
+  ErrorCode Init();
+
+  /// @brief 关闭 client；可重复调用
+  void Shutdown();
 
   Result<qtrade::account_risk::AccountRiskPolicy> GetAccountRiskPolicy(
     const std::string& tenant_id,

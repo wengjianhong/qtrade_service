@@ -16,7 +16,7 @@
 
 namespace qtrade::bridge {
 
-/// @brief 经 ConfigClient 拉取/订阅，对外仅暴露 IConfigBridge
+/// @brief 经 ConfigClient 拉取/订阅；以 IConfigBridge 注入引擎前须先 Init()
 class GrpcConfigBridge final : public qtrade::config::IConfigBridge {
  public:
   GrpcConfigBridge(qtrade::common::config::ServiceConfig service_config, std::string engine_id);
@@ -25,11 +25,11 @@ class GrpcConfigBridge final : public qtrade::config::IConfigBridge {
   GrpcConfigBridge(const GrpcConfigBridge&) = delete;
   GrpcConfigBridge& operator=(const GrpcConfigBridge&) = delete;
 
-  /// @brief 建连、首次 Get、启动 Subscribe（回调内 Apply）
-  ErrorCode Start() override;
+  /// @brief 建连、首次 Get、启动 Subscribe（回调内 Apply）；注入引擎前调用
+  ErrorCode Init();
 
-  /// @brief 停止订阅并关闭 client
-  void Stop() override;
+  /// @brief 停止订阅并关闭 client；可重复调用
+  void Shutdown();
 
   Result<qtrade::config::EngineConfig> GetEngineConfig() const override;
   ErrorCode ApplyEngineConfig(const qtrade::config::EngineConfig& config) override;
