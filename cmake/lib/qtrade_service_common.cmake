@@ -1,5 +1,7 @@
 # ---------------------------------------------------------------------------
 # qtrade_service_common: framework + dao + service-side common
+#
+# 仅本仓微服务私有静态库：不 install、不 export。
 # ---------------------------------------------------------------------------
 
 file(GLOB_RECURSE QTRADE_SERVICE_FRAMEWORK_SRC CONFIGURE_DEPENDS
@@ -18,7 +20,6 @@ add_library(qtrade_service_common STATIC
 target_include_directories(qtrade_service_common PUBLIC
   $<BUILD_INTERFACE:${QTRADE_SERVICE_INCLUDE_DIR}>
   $<BUILD_INTERFACE:${QTRADE_SERVICE_INCLUDE_OVERLAY_DIR}>
-  $<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}>
 )
 
 target_link_libraries(qtrade_service_common PUBLIC

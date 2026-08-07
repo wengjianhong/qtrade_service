@@ -1,8 +1,9 @@
 # ---------------------------------------------------------------------------
 # Install rules for find_package(qtrade_service CONFIG)
 #
-# 对外交付：微服务二进制 + proto 库（及服务侧头）。
-# gRPC 薄客户端 / Grpc*Bridge 已迁至 qtrade_client 本仓编译，不再 install。
+# 对外交付：微服务二进制 + libqtrade_service_proto.so（及 proto 头）。
+# qtrade_service_common 仅私有静态链进服务进程，不 install。
+# gRPC 薄客户端 / Grpc*Bridge 在 qtrade_client 本仓编译。
 # ---------------------------------------------------------------------------
 
 include(CMakePackageConfigHelpers)
@@ -13,18 +14,18 @@ write_basic_package_version_file(
   COMPATIBILITY SameMajorVersion
 )
 
-install(TARGETS
-  qtrade_service_proto
-  qtrade_service_common
+install(TARGETS qtrade_service_proto
   EXPORT qtrade_serviceTargets
+  LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
   ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR}
+  RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
 )
 
 install(DIRECTORY ${PROJECT_SOURCE_DIR}/include/qtrade/
   DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/qtrade
 )
 
-# 服务侧 / 下游编译仍可能需要的 common 头（不含已迁走的 strategy_config_utils）
+# 服务侧仍可能被本仓/测试引用的 common 头（不含已迁走的 strategy_config_utils）
 install(DIRECTORY ${QTRADE_SERVICE_SRC_QTRADE_DIR}/common/proto/
   DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/qtrade/common/proto
   FILES_MATCHING PATTERN "*.hpp" PATTERN "*.h"

@@ -1,5 +1,5 @@
 # ---------------------------------------------------------------------------
-# qtrade_service_proto: Protobuf / gRPC code generation and static library
+# qtrade_service_proto: Protobuf / gRPC code generation and shared library
 #
 # Flow (configure time):
 #   1. GLOB all .proto under proto/ (flat layout, e.g. proto/config/v1/*.proto)
@@ -27,7 +27,7 @@ set(QTRADE_SERVICE_PROTO_PUBLIC_INCLUDE_DIR ${CMAKE_CURRENT_BINARY_DIR}/include)
 # --- 1. Scan proto/ ---
 file(GLOB_RECURSE QTRADE_SERVICE_PROTO_FILES CONFIGURE_DEPENDS "${QTRADE_SERVICE_PROTO_ROOT}/*.proto")
 
-# --- Static library target ---
+# --- Shared library target ---
 if(QTRADE_SERVICE_PROTO_FILES)
   set(QTRADE_SERVICE_PROTO_REL_FILES "")
   foreach(_proto ${QTRADE_SERVICE_PROTO_FILES})
@@ -80,8 +80,13 @@ if(QTRADE_SERVICE_PROTO_FILES)
       "${QTRADE_SERVICE_PROTO_GEN_DIR}/*.pb.cc"
       "${QTRADE_SERVICE_PROTO_GEN_DIR}/*.grpc.pb.cc")
 
-  add_library(qtrade_service_proto STATIC ${QTRADE_SERVICE_PROTO_SRCS})
+  add_library(qtrade_service_proto SHARED ${QTRADE_SERVICE_PROTO_SRCS})
   target_compile_options(qtrade_service_proto PRIVATE ${QTRADE_SERVICE_GRPC_CFLAGS_OTHER})
+  set_target_properties(qtrade_service_proto PROPERTIES
+    VERSION ${PROJECT_VERSION}
+    SOVERSION ${PROJECT_VERSION_MAJOR}
+    OUTPUT_NAME qtrade_service_proto
+  )
 
   # Public:  #include <qtrade/proto/config/v1/config.pb.h>
   # Private: compile .pb.cc which #include "config/v1/..." relative to build/proto/

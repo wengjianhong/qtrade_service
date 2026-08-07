@@ -21,6 +21,10 @@ else()
   message(FATAL_ERROR "qtrade_service must be configured as a top-level project; qtrade_engine must not add_subdirectory it")
 endif()
 
+# Service binaries need RUNPATH to find libqtrade_engine.so / libqtrade_service_proto.so
+set(CMAKE_INSTALL_RPATH "${CMAKE_INSTALL_PREFIX}/${CMAKE_INSTALL_LIBDIR}")
+set(CMAKE_INSTALL_RPATH_USE_LINK_PATH FALSE)
+
 add_compile_options(-fPIC -Wall -Wextra -Wpedantic -O2)
 
 find_package(Threads REQUIRED)

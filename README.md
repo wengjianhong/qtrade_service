@@ -9,7 +9,7 @@
 - `proto/`：config / account / account_risk
 - `src/qtrade_service/service/`：三个支撑服务实现
 - `src/qtrade_service/apps/`：三个 `*_service` 可执行文件入口
-- 安装库：`libqtrade_service_proto.a`（及服务侧 `libqtrade_service_common.a`）
+- 安装库：`libqtrade_service_proto.so`（`qtrade_service_common` 仅私有静态链进微服务，不安装）
 
 公开 `#include` 仍为 `qtrade/...`（构建期 overlay；proto 头安装到 `include/qtrade/proto/`）。
 
