@@ -94,7 +94,7 @@ bin/qtrade_account_risk_service: CMakeFiles/qtrade_account_risk_service.dir/src/
 bin/qtrade_account_risk_service: CMakeFiles/qtrade_account_risk_service.dir/build.make
 bin/qtrade_account_risk_service: libqtrade_account_risk_service_static.a
 bin/qtrade_account_risk_service: libqtrade_service_common.a
-bin/qtrade_account_risk_service: /usr/local/qtrade/lib/libqtrade_common.a
+bin/qtrade_account_risk_service: /usr/local/qtrade/lib/libqtrade_engine.a
 bin/qtrade_account_risk_service: /usr/local/lib/libspdlog.so.1.16.0
 bin/qtrade_account_risk_service: libqtrade_service_proto.a
 bin/qtrade_account_risk_service: /usr/local/cpputils/lib/libcpputils.so

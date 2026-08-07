@@ -103,14 +103,14 @@ endif()
 
 # Third-party headers required by generated *.pb.h / *.grpc.pb.h (e.g. <grpcpp/...>,
 # <google/protobuf/...>). SYSTEM suppresses warnings from those headers.
-# PUBLIC propagates to qtrade_common / qtrade_core so dependents compile without
+# PUBLIC propagates so dependents compile without
 # calling pkg_check_modules(grpc++) themselves.
 target_include_directories(qtrade_service_proto SYSTEM PUBLIC
     ${QTRADE_SERVICE_GRPC_INCLUDE_DIRS}
     ${QTRADE_SERVICE_PROTOBUF_INCLUDE_DIRS})
 
 # Link grpc++ and protobuf runtime. PUBLIC propagates link requirements to any
-# target that links qtrade_service_proto (directly or via qtrade_common / qtrade_core).
+# target that links qtrade_service_proto (directly or transitively).
 target_link_libraries(qtrade_service_proto PUBLIC
     ${QTRADE_SERVICE_GRPC_LIBRARIES}
     ${QTRADE_SERVICE_PROTOBUF_LIBRARIES})

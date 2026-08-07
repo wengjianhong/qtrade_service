@@ -69,7 +69,7 @@ add_library(qtrade_service::qtrade_service_common STATIC IMPORTED)
 
 set_target_properties(qtrade_service::qtrade_service_common PROPERTIES
   INTERFACE_INCLUDE_DIRECTORIES "${_IMPORT_PREFIX}/include"
-  INTERFACE_LINK_LIBRARIES "qtrade::qtrade_common;Threads::Threads;spdlog::spdlog;qtrade_service::qtrade_service_proto;nlohmann_json::nlohmann_json;cpputils::cpputils"
+  INTERFACE_LINK_LIBRARIES "qtrade_engine::qtrade_engine;Threads::Threads;spdlog::spdlog;qtrade_service::qtrade_service_proto;nlohmann_json::nlohmann_json;cpputils::cpputils"
 )
 
 # Create imported target qtrade_service::qtrade_service_client

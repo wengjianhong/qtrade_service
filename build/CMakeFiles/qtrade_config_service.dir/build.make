@@ -94,7 +94,7 @@ bin/qtrade_config_service: CMakeFiles/qtrade_config_service.dir/src/qtrade/apps/
 bin/qtrade_config_service: CMakeFiles/qtrade_config_service.dir/build.make
 bin/qtrade_config_service: libqtrade_config_service_static.a
 bin/qtrade_config_service: libqtrade_service_common.a
-bin/qtrade_config_service: /usr/local/qtrade/lib/libqtrade_common.a
+bin/qtrade_config_service: /usr/local/qtrade/lib/libqtrade_engine.a
 bin/qtrade_config_service: /usr/local/lib/libspdlog.so.1.16.0
 bin/qtrade_config_service: libqtrade_service_proto.a
 bin/qtrade_config_service: /usr/local/cpputils/lib/libcpputils.so

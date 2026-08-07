@@ -449,8 +449,8 @@ pkgcfg_lib_QTRADE_SERVICE_GRPC_z:FILEPATH=/usr/lib/x86_64-linux-gnu/libz.so
 //Path to a library.
 pkgcfg_lib_QTRADE_SERVICE_PROTOBUF_protobuf:FILEPATH=/usr/lib/x86_64-linux-gnu/libprotobuf.so
 
-//The directory containing a CMake configuration file for qtrade.
-qtrade_DIR:PATH=/usr/local/qtrade/lib/cmake/qtrade
+//The directory containing a CMake configuration file for qtrade_engine.
+qtrade_engine_DIR:PATH=/usr/local/qtrade/lib/cmake/qtrade_engine
 
 //Value Computed by CMake
 qtrade_service_BINARY_DIR:STATIC=/home/wengjianhong/GitSpace/qtrade_service/build

@@ -95,7 +95,7 @@ lib/bridges/libqtrade_bridge_grpc.so: CMakeFiles/qtrade_bridge_grpc.dir/build.ma
 lib/bridges/libqtrade_bridge_grpc.so: libqtrade_service_bridges.a
 lib/bridges/libqtrade_bridge_grpc.so: libqtrade_service_client.a
 lib/bridges/libqtrade_bridge_grpc.so: libqtrade_service_common.a
-lib/bridges/libqtrade_bridge_grpc.so: /usr/local/qtrade/lib/libqtrade_common.a
+lib/bridges/libqtrade_bridge_grpc.so: /usr/local/qtrade/lib/libqtrade_engine.a
 lib/bridges/libqtrade_bridge_grpc.so: /usr/local/lib/libspdlog.so.1.16.0
 lib/bridges/libqtrade_bridge_grpc.so: /usr/local/cpputils/lib/libcpputils.so
 lib/bridges/libqtrade_bridge_grpc.so: /usr/lib/x86_64-linux-gnu/libsoci_core.so

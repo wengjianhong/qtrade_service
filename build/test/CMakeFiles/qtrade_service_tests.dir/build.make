@@ -96,7 +96,7 @@ bin/qtrade_service_tests: libqtrade_account_risk_service_static.a
 bin/qtrade_service_tests: /usr/lib/x86_64-linux-gnu/libgtest.a
 bin/qtrade_service_tests: /usr/lib/x86_64-linux-gnu/libgtest_main.a
 bin/qtrade_service_tests: libqtrade_service_common.a
-bin/qtrade_service_tests: /usr/local/qtrade/lib/libqtrade_common.a
+bin/qtrade_service_tests: /usr/local/qtrade/lib/libqtrade_engine.a
 bin/qtrade_service_tests: /usr/local/lib/libspdlog.so.1.16.0
 bin/qtrade_service_tests: libqtrade_service_proto.a
 bin/qtrade_service_tests: /usr/local/cpputils/lib/libcpputils.so
