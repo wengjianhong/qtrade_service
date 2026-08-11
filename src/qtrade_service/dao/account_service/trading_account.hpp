@@ -17,12 +17,10 @@
 namespace qtrade::framework::dao {
 
 /// @brief trading_account 表行记录
-/// @details 表主键说明：(tenant_id, account_id)
+/// @details 表主键说明：(account_id)；account_id 全局唯一
 ///
 struct TradingAccountRecord {
-  /// 租户 ID
-  std::optional<std::string> tenant_id;
-  /// 账户 ID
+  /// 账户 ID（全局唯一）
   std::optional<std::string> account_id;
   /// 券商 ID
   std::optional<std::string> broker_id;
@@ -115,7 +113,6 @@ KeyValues BuildTradingAccountValues(const TradingAccountRecord& record);
 template <typename RowT>
 TradingAccountRecord BuildTradingAccountRecord(const RowT& row) {
   TradingAccountRecord record;
-  AssignTextField(row, "tenant_id", record.tenant_id);
   AssignTextField(row, "account_id", record.account_id);
   AssignTextField(row, "broker_id", record.broker_id);
   AssignTextField(row, "connection_string", record.connection_string);

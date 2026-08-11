@@ -11,8 +11,7 @@ namespace {
 /// @brief 建表 SQL 脚本
 const std::string kCreateTableSql = R"(
 CREATE TABLE IF NOT EXISTS account_risk_policy (
-  tenant_id TEXT NOT NULL COMMENT '租户 ID',
-  account_id TEXT NOT NULL COMMENT '交易账户 ID',
+  account_id TEXT NOT NULL COMMENT '交易账户 ID（全局唯一）',
   version BIGINT NOT NULL COMMENT '策略版本；与 Reserve 的 risk_config_version 对齐',
   valid_until_unix_ms BIGINT NOT NULL COMMENT '策略失效时间（Unix 毫秒）；0 表示由服务端 TTL 决定',
   max_notional DOUBLE NOT NULL COMMENT '账户名义金额硬上限',
@@ -23,7 +22,7 @@ CREATE TABLE IF NOT EXISTS account_risk_policy (
   max_daily_loss DOUBLE NOT NULL COMMENT '账户日内损失硬上限（绝对值）',
   safety_buffer DOUBLE NOT NULL COMMENT '安全缓冲；实例预算之和须不超过硬上限减该值',
   enabled BOOLEAN NOT NULL COMMENT '是否启用账户级硬限制',
-  PRIMARY KEY (tenant_id, account_id)
+  PRIMARY KEY (account_id)
 );
 )";
 
@@ -38,7 +37,7 @@ const std::vector<std::string> kCreateTableSqls = {kCreateTableSql};
 
 /// @brief 索引 SQL 列表
 const std::vector<std::string> kIndexSqls = {
-  R"(CREATE INDEX IF NOT EXISTS idx_account_risk_policy_enabled ON account_risk_policy (tenant_id, enabled);)"};
+  R"(CREATE INDEX IF NOT EXISTS idx_account_risk_policy_enabled ON account_risk_policy (enabled);)"};
 
 }  // namespace
 

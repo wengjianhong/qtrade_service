@@ -1,5 +1,5 @@
 /// @file      list_accounts_handler.cpp
-/// @brief     ListAccounts：按 tenant_id 可选过滤，返回账户列表
+/// @brief     ListAccounts：返回全部交易账户列表
 /// @author    wengjianhong
 /// @date      2026-07-13
 /// @copyright CC BY-NC-SA 4.0
@@ -16,8 +16,8 @@ namespace qtrade::service {
 Result<ListAccountsServerData> ListAccountsHandler::ConvertToServerData(
   ::grpc::ServerContext* context, const qtrade::account::v1::ListAccountsRequest* request) {
   (void)context;
+  (void)request;
   ListAccountsServerData data;
-  data.tenant_id = request->tenant_id();
   return {ErrorCode::kSuccess, "success", std::move(data)};
 }
 
@@ -38,10 +38,6 @@ Result<void> ListAccountsHandler::ExecuteBusiness(ListAccountsServerData& server
   }
 
   qtrade::framework::dao::TradingAccountRecord where;
-  if (!server_data.tenant_id.empty()) {
-    where.tenant_id = server_data.tenant_id;
-  }
-
   const auto result = dao_manager_.Get<qtrade::framework::dao::TradingAccount>().Select(*connection, where);
   if (result.error_code != ErrorCode::kSuccess || !result.data.has_value()) {
     return Result<void>{result.error_code, result.error_message};

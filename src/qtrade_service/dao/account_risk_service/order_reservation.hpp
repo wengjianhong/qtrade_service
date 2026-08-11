@@ -17,12 +17,10 @@
 namespace qtrade::framework::dao {
 
 /// @brief order_reservation 表行记录
-/// @details 表主键说明：(tenant_id, account_id, order_id)
+/// @details 表主键说明：(account_id, order_id)；account_id 全局唯一
 ///
 struct OrderReservationRecord {
-  /// 租户 ID
-  std::optional<std::string> tenant_id;
-  /// 交易账户 ID
+  /// 交易账户 ID（全局唯一）
   std::optional<std::string> account_id;
   /// 全局订单 ID
   std::optional<std::string> order_id;

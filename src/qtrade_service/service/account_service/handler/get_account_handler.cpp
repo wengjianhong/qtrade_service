@@ -1,5 +1,5 @@
 /// @file      get_account_handler.cpp
-/// @brief     GetAccount：按 tenant_id + account_id 查 trading_account
+/// @brief     GetAccount：按 account_id 查 trading_account
 /// @author    wengjianhong
 /// @date      2026-07-13
 /// @copyright CC BY-NC-SA 4.0
@@ -15,14 +15,13 @@ Result<GetAccountServerData> GetAccountHandler::ConvertToServerData(
   ::grpc::ServerContext* context, const qtrade::account::v1::GetAccountRequest* request) {
   (void)context;
   GetAccountServerData data;
-  data.tenant_id = request->tenant_id();
   data.account_id = request->account_id();
   return {ErrorCode::kSuccess, "success", std::move(data)};
 }
 
 Result<void> GetAccountHandler::ValidateParams(GetAccountServerData& server_data) {
-  if (server_data.tenant_id.empty() || server_data.account_id.empty()) {
-    return Result<void>{ErrorCode::kInternalError, "tenant_id and account_id are required"};
+  if (server_data.account_id.empty()) {
+    return Result<void>{ErrorCode::kInternalError, "account_id is required"};
   }
   return Result<void>{ErrorCode::kSuccess, "success"};
 }
@@ -39,7 +38,6 @@ Result<void> GetAccountHandler::ExecuteBusiness(GetAccountServerData& server_dat
   }
 
   qtrade::framework::dao::TradingAccountRecord where;
-  where.tenant_id = server_data.tenant_id;
   where.account_id = server_data.account_id;
 
   const auto result = dao_manager_.Get<qtrade::framework::dao::TradingAccount>().Select(*connection, where);

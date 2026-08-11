@@ -17,12 +17,10 @@
 namespace qtrade::framework::dao {
 
 /// @brief account_risk_ledger 表行记录
-/// @details 表主键说明：(tenant_id, account_id)
+/// @details 表主键说明：(account_id)；account_id 全局唯一
 ///
 struct AccountRiskLedgerRecord {
-  /// 租户 ID
-  std::optional<std::string> tenant_id;
-  /// 交易账户 ID
+  /// 交易账户 ID（全局唯一）
   std::optional<std::string> account_id;
   /// 账簿版本；每次结算/预占变更递增
   std::optional<std::uint64_t> ledger_version;

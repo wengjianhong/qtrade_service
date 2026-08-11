@@ -29,12 +29,10 @@ enum class CredentialType {
 };
 
 /// @brief account_credential 表行记录
-/// @details 表主键说明：(tenant_id, account_id, key_id, credential_type)
+/// @details 表主键说明：(account_id, credential_type)；account_id 全局唯一
 ///
 struct AccountCredentialRecord {
-  /// 租户 ID
-  std::optional<std::string> tenant_id;
-  /// 账户 ID
+  /// 账户 ID（全局唯一）
   std::optional<std::string> account_id;
   /// 加密密钥标识
   std::optional<std::string> key_id;
@@ -127,7 +125,6 @@ KeyValues BuildAccountCredentialValues(const AccountCredentialRecord& record);
 template <typename RowT>
 AccountCredentialRecord BuildAccountCredentialRecord(const RowT& row) {
   AccountCredentialRecord record;
-  AssignTextField(row, "tenant_id", record.tenant_id);
   AssignTextField(row, "account_id", record.account_id);
   std::optional<std::int64_t> credential_type;
   AssignInt64Field(row, "credential_type", credential_type);

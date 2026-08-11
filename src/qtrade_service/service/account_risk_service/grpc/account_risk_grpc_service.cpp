@@ -51,15 +51,14 @@ struct LedgerState {
 
 /// 保护全局账簿
 std::mutex g_ledger_mutex;
-/// tenant+account → 账簿
+/// account_id → 账簿（account_id 全局唯一）
 std::unordered_map<std::string, LedgerState> g_ledgers;
 
 /// @brief 生成账簿主键
-/// @param tenant_id 租户 ID
-/// @param account_id 账户 ID
-/// @return 组合键
-std::string AccountKey(const std::string& tenant_id, const std::string& account_id) {
-  return tenant_id + "\n" + account_id;
+/// @param account_id 账户 ID（全局唯一）
+/// @return 账簿键
+std::string AccountKey(const std::string& account_id) {
+  return account_id;
 }
 
 /// @brief 将已过期预占从账簿占用中扣除
@@ -97,13 +96,13 @@ AccountRiskGrpcService::AccountRiskGrpcService(
 grpc::Status AccountRiskGrpcService::ReserveOrder(grpc::ServerContext*,
                                                   const qtrade::account_risk::v1::ReserveOrderRequest* request,
                                                   qtrade::account_risk::v1::ReserveOrderResponse* response) {
-  if (request->tenant_id().empty() || request->account_id().empty() || request->intent().order_id().empty()) {
-    return InvalidArgument("tenant_id, account_id and intent.order_id are required");
+  if (request->account_id().empty() || request->intent().order_id().empty()) {
+    return InvalidArgument("account_id and intent.order_id are required");
   }
 
   const std::int64_t now = qtrade::common::system::UnixMillisNow();
   std::lock_guard lock(g_ledger_mutex);
-  auto ledger_it = g_ledgers.find(AccountKey(request->tenant_id(), request->account_id()));
+  auto ledger_it = g_ledgers.find(AccountKey(request->account_id()));
   if (ledger_it == g_ledgers.end()) {
     response->set_decision(qtrade::account_risk::v1::ReserveOrderResponse::REJECTED);
     response->set_reject_reason("ACCOUNT_RISK_POLICY_NOT_FOUND");
@@ -176,12 +175,12 @@ grpc::Status AccountRiskGrpcService::ReserveOrder(grpc::ServerContext*,
 grpc::Status AccountRiskGrpcService::GetReservation(grpc::ServerContext*,
                                                     const qtrade::account_risk::v1::GetReservationRequest* request,
                                                     qtrade::account_risk::v1::GetReservationResponse* response) {
-  if (request->tenant_id().empty() || request->account_id().empty() || request->order_id().empty()) {
-    return InvalidArgument("tenant_id, account_id and order_id are required");
+  if (request->account_id().empty() || request->order_id().empty()) {
+    return InvalidArgument("account_id and order_id are required");
   }
 
   std::lock_guard lock(g_ledger_mutex);
-  const auto ledger_it = g_ledgers.find(AccountKey(request->tenant_id(), request->account_id()));
+  const auto ledger_it = g_ledgers.find(AccountKey(request->account_id()));
   if (ledger_it == g_ledgers.end()) {
     return grpc::Status(grpc::StatusCode::NOT_FOUND, "account risk ledger not found");
   }
@@ -202,11 +201,11 @@ grpc::Status AccountRiskGrpcService::GetReservation(grpc::ServerContext*,
 grpc::Status AccountRiskGrpcService::ReleaseOrder(grpc::ServerContext*,
                                                   const qtrade::account_risk::v1::ReleaseOrderRequest* request,
                                                   qtrade::account_risk::v1::ReleaseOrderResponse* response) {
-  if (request->tenant_id().empty() || request->account_id().empty() || request->order_id().empty()) {
-    return InvalidArgument("tenant_id, account_id and order_id are required");
+  if (request->account_id().empty() || request->order_id().empty()) {
+    return InvalidArgument("account_id and order_id are required");
   }
   std::lock_guard lock(g_ledger_mutex);
-  const auto ledger_it = g_ledgers.find(AccountKey(request->tenant_id(), request->account_id()));
+  const auto ledger_it = g_ledgers.find(AccountKey(request->account_id()));
   if (ledger_it == g_ledgers.end()) {
     response->set_released(false);
     response->set_reject_reason("ACCOUNT_RISK_POLICY_NOT_FOUND");
@@ -237,7 +236,7 @@ grpc::Status AccountRiskGrpcService::ListActiveReservations(
   const qtrade::account_risk::v1::ListActiveReservationsRequest* request,
   qtrade::account_risk::v1::ListActiveReservationsResponse* response) {
   std::lock_guard lock(g_ledger_mutex);
-  const auto ledger_it = g_ledgers.find(AccountKey(request->tenant_id(), request->account_id()));
+  const auto ledger_it = g_ledgers.find(AccountKey(request->account_id()));
   if (ledger_it == g_ledgers.end()) {
     return grpc::Status::OK;
   }
@@ -260,7 +259,7 @@ grpc::Status AccountRiskGrpcService::GetAccountRiskPolicy(
   const qtrade::account_risk::v1::GetAccountRiskPolicyRequest* request,
   qtrade::account_risk::v1::GetAccountRiskPolicyResponse* response) {
   std::lock_guard lock(g_ledger_mutex);
-  const auto ledger_it = g_ledgers.find(AccountKey(request->tenant_id(), request->account_id()));
+  const auto ledger_it = g_ledgers.find(AccountKey(request->account_id()));
   if (ledger_it == g_ledgers.end()) {
     return grpc::Status(grpc::StatusCode::NOT_FOUND, "account risk policy not found");
   }
@@ -273,11 +272,11 @@ grpc::Status AccountRiskGrpcService::UpsertAccountRiskPolicy(
   const qtrade::account_risk::v1::UpsertAccountRiskPolicyRequest* request,
   qtrade::account_risk::v1::UpsertAccountRiskPolicyResponse*) {
   const AccountRiskPolicy& policy = request->policy();
-  if (policy.tenant_id().empty() || policy.account_id().empty() || policy.version() == 0) {
-    return InvalidArgument("tenant_id, account_id and non-zero version are required");
+  if (policy.account_id().empty() || policy.version() == 0) {
+    return InvalidArgument("account_id and non-zero version are required");
   }
   std::lock_guard lock(g_ledger_mutex);
-  LedgerState& ledger = g_ledgers[AccountKey(policy.tenant_id(), policy.account_id())];
+  LedgerState& ledger = g_ledgers[AccountKey(policy.account_id())];
   if (ledger.policy.version() > policy.version()) {
     return grpc::Status(grpc::StatusCode::FAILED_PRECONDITION, "risk policy version cannot decrease");
   }

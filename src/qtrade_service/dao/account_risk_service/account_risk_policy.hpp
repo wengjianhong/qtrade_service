@@ -17,12 +17,10 @@
 namespace qtrade::framework::dao {
 
 /// @brief account_risk_policy 表行记录
-/// @details 表主键说明：(tenant_id, account_id)
+/// @details 表主键说明：(account_id)；account_id 全局唯一
 ///
 struct AccountRiskPolicyRecord {
-  /// 租户 ID
-  std::optional<std::string> tenant_id;
-  /// 交易账户 ID
+  /// 交易账户 ID（全局唯一）
   std::optional<std::string> account_id;
   /// 策略版本；与 Reserve 的 risk_config_version 对齐
   std::optional<std::uint64_t> version;

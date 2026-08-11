@@ -20,15 +20,14 @@ Result<GetCredentialServerData> GetCredentialHandler::ConvertToServerData(
   ::grpc::ServerContext* context, const qtrade::account::v1::GetCredentialRequest* request) {
   (void)context;
   GetCredentialServerData data;
-  data.tenant_id = request->tenant_id();
   data.account_id = request->account_id();
   data.engine_id = request->engine_id();
   return {ErrorCode::kSuccess, "success", std::move(data)};
 }
 
 Result<void> GetCredentialHandler::ValidateParams(GetCredentialServerData& server_data) {
-  if (server_data.tenant_id.empty() || server_data.engine_id.empty() || server_data.account_id.empty()) {
-    return Result<void>{ErrorCode::kInternalError, "tenant_id, engine_id and account_id are required"};
+  if (server_data.engine_id.empty() || server_data.account_id.empty()) {
+    return Result<void>{ErrorCode::kInternalError, "engine_id and account_id are required"};
   }
   return Result<void>{ErrorCode::kSuccess, "success"};
 }
@@ -45,7 +44,6 @@ Result<void> GetCredentialHandler::ExecuteBusiness(GetCredentialServerData& serv
   }
 
   qtrade::framework::dao::TradingAccountRecord where;
-  where.tenant_id = server_data.tenant_id;
   where.account_id = server_data.account_id;
 
   /// 查询 trading_account
@@ -64,7 +62,6 @@ Result<void> GetCredentialHandler::ExecuteBusiness(GetCredentialServerData& serv
 
   /// 查询并解密 account_credential（默认取交易密码）
   qtrade::framework::dao::AccountCredentialRecord cred_where;
-  cred_where.tenant_id = server_data.tenant_id;
   cred_where.account_id = server_data.account_id;
   cred_where.credential_type = qtrade::framework::dao::CredentialType::kPassword;
   const auto cred_result =
@@ -99,8 +96,7 @@ void GetCredentialHandler::Rollback(GetCredentialServerData& server_data) {
 
 Result<void> GetCredentialHandler::NotifyService(GetCredentialServerData& server_data) {
   /// 记录凭证拉取审计日志
-  spdlog::info("[GetCredentialHandler] credential fetched for tenant={} engine={} account={}",
-               server_data.tenant_id,
+  spdlog::info("[GetCredentialHandler] credential fetched for engine={} account={}",
                server_data.engine_id,
                server_data.account_id);
   return Result<void>{ErrorCode::kSuccess, "success"};
@@ -109,7 +105,6 @@ Result<void> GetCredentialHandler::NotifyService(GetCredentialServerData& server
 Result<void> GetCredentialHandler::BuildResponse(GetCredentialServerData& server_data,
                                                  qtrade::account::v1::GetCredentialResponse* response) {
   auto* credential = response->mutable_credential();
-  credential->set_tenant_id(server_data.tenant_id);
   credential->set_account_id(server_data.account_id);
   credential->set_broker_id(server_data.account.broker_id.value_or(""));
   credential->set_connection_string(server_data.account.connection_string.value_or(""));

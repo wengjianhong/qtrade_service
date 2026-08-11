@@ -11,8 +11,7 @@ namespace {
 /// @brief 建表 SQL 脚本
 const std::string kCreateTableSql = R"(
 CREATE TABLE IF NOT EXISTS account_risk_ledger (
-  tenant_id TEXT NOT NULL COMMENT '租户 ID',
-  account_id TEXT NOT NULL COMMENT '交易账户 ID',
+  account_id TEXT NOT NULL COMMENT '交易账户 ID（全局唯一）',
   ledger_version BIGINT NOT NULL COMMENT '账簿版本；每次结算/预占变更递增',
   filled_notional DOUBLE NOT NULL COMMENT '已成交占用名义金额',
   filled_margin DOUBLE NOT NULL COMMENT '已成交占用保证金',
@@ -23,7 +22,7 @@ CREATE TABLE IF NOT EXISTS account_risk_ledger (
   net_exposure DOUBLE NOT NULL COMMENT '当前净敞口',
   daily_pnl DOUBLE NOT NULL COMMENT '日内盈亏（亏损为负）',
   updated_at_unix_ms BIGINT NOT NULL COMMENT '最近更新时间（Unix 毫秒）',
-  PRIMARY KEY (tenant_id, account_id)
+  PRIMARY KEY (account_id)
 );
 )";
 

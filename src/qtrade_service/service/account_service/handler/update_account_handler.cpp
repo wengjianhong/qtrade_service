@@ -36,8 +36,8 @@ Result<UpdateAccountServerData> UpdateAccountHandler::ConvertToServerData(
 }
 
 Result<void> UpdateAccountHandler::ValidateParams(UpdateAccountServerData& server_data) {
-  if (OptionalStringEmpty(server_data.account.tenant_id) || OptionalStringEmpty(server_data.account.account_id)) {
-    return Result<void>{ErrorCode::kInternalError, "tenant_id and account_id are required"};
+  if (OptionalStringEmpty(server_data.account.account_id)) {
+    return Result<void>{ErrorCode::kInternalError, "account_id is required"};
   }
   return Result<void>{ErrorCode::kSuccess, "success"};
 }
@@ -60,7 +60,6 @@ Result<void> UpdateAccountHandler::ExecuteBusiness(UpdateAccountServerData& serv
   auto& credential_dao = dao_manager_.Get<qtrade::framework::dao::AccountCredential>();
 
   qtrade::framework::dao::TradingAccountRecord where;
-  where.tenant_id = server_data.account.tenant_id;
   where.account_id = server_data.account.account_id;
 
   // 1. 更新 trading_account
@@ -84,7 +83,6 @@ Result<void> UpdateAccountHandler::ExecuteBusiness(UpdateAccountServerData& serv
     }
 
     qtrade::framework::dao::AccountCredentialRecord credential_key;
-    credential_key.tenant_id = server_data.account.tenant_id;
     credential_key.account_id = server_data.account.account_id;
     credential_key.credential_type = qtrade::framework::dao::CredentialType::kPassword;
     const auto existing = credential_dao.Select(*connection, credential_key);
@@ -94,7 +92,6 @@ Result<void> UpdateAccountHandler::ExecuteBusiness(UpdateAccountServerData& serv
     }
 
     qtrade::framework::dao::AccountCredentialRecord credential_row;
-    credential_row.tenant_id = server_data.account.tenant_id;
     credential_row.account_id = server_data.account.account_id;
     credential_row.credential_type = qtrade::framework::dao::CredentialType::kPassword;
     credential_row.key_id = key_id;

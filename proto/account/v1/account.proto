@@ -1,6 +1,6 @@
 // @file      account.proto
 // @brief     交易账户服务 gRPC 接口定义
-// @details   管理租户下的券商资金账户与登录凭证；平台系统用户鉴权不在此服务
+// @details   管理券商资金账户与登录凭证（account_id 全局唯一）；平台系统用户鉴权不在此服务
 // @author    wengjianhong
 // @date      2026-07-08
 // @copyright CC BY-NC-SA 4.0
@@ -12,11 +12,11 @@ import "common/v1/meta.proto";
 
 option cc_enable_arenas = true;
 
-// 交易账户（券商资金账号，租户内唯一）
+// 交易账户（券商资金账号，account_id 全局唯一）
 message TradingAccount {
-    // 租户标识
-    string tenant_id = 1;
-    // 交易账户号
+    reserved 1;
+    reserved "tenant_id";
+    // 交易账户号（全局唯一）
     string account_id = 2;
     // 交易柜台标识
     string broker_id = 3;
@@ -46,9 +46,9 @@ message AddAccountResponse {
 message GetAccountRequest {
     // 统一请求链路元数据
     qtrade.common.meta.v1.RequestMeta meta = 1;
-    // 租户标识
-    string tenant_id = 2;
-    // 交易账户号
+    reserved 2;
+    reserved "tenant_id";
+    // 交易账户号（全局唯一）
     string account_id = 3;
 }
 
@@ -64,8 +64,8 @@ message GetAccountResponse {
 message ListAccountsRequest {
     // 统一请求链路元数据
     qtrade.common.meta.v1.RequestMeta meta = 1;
-    // 租户标识（空表示不过滤）
-    string tenant_id = 2;
+    reserved 2;
+    reserved "tenant_id";
 }
 
 // 查询交易账户列表响应
@@ -94,9 +94,9 @@ message UpdateAccountResponse {
 message GetCredentialRequest {
     // 统一请求链路元数据
     qtrade.common.meta.v1.RequestMeta meta = 1;
-    // 租户标识
-    string tenant_id = 2;
-    // 交易账户号
+    reserved 2;
+    reserved "tenant_id";
+    // 交易账户号（全局唯一）
     string account_id = 3;
     // 引擎实例标识
     string engine_id = 4;
@@ -105,7 +105,9 @@ message GetCredentialRequest {
 // 仅供已授权引擎建立柜台连接使用的短生命周期凭证材料。
 // 不用于账户查询、列表或配置接口。
 message CredentialMaterial {
-    string tenant_id = 1;
+    reserved 1;
+    reserved "tenant_id";
+    // 交易账户号（全局唯一）
     string account_id = 2;
     string broker_id = 3;
     string connection_string = 4;

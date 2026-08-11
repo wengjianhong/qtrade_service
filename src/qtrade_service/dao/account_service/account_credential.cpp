@@ -13,12 +13,11 @@ namespace {
 /// @brief 建表 SQL 脚本
 const std::string kCreateTableSql = R"(
 CREATE TABLE IF NOT EXISTS account_credential (
-  tenant_id TEXT NOT NULL COMMENT '租户 ID（与 trading_account 对齐）',
-  account_id TEXT NOT NULL COMMENT '交易账户 ID（与 trading_account 对齐）',
+  account_id TEXT NOT NULL COMMENT '交易账户 ID（全局唯一，与 trading_account 对齐）',
   key_id TEXT NOT NULL COMMENT '加密密钥标识（解密选钥/轮换；与凭证内容版本无关）',
   credential_type INTEGER NOT NULL COMMENT '凭证类型（0=default, 1=password, 2=auth_code）',
   ciphertext TEXT NOT NULL COMMENT '凭证密文（可逆加密；勿存明文）',
-  PRIMARY KEY (tenant_id, account_id, credential_type)
+  PRIMARY KEY (account_id, credential_type)
 );
 )";
 
@@ -55,7 +54,6 @@ const std::vector<std::string>& AccountCredential::GetIndexSqls() const {
 /// @brief 将 AccountCredentialRecord 转为 KeyValues
 KeyValues BuildAccountCredentialValues(const AccountCredentialRecord& record) {
   KeyValues values;
-  AddTextValue(values, "tenant_id", record.tenant_id);
   AddTextValue(values, "account_id", record.account_id);
   if (record.credential_type.has_value()) {
     AddInt64Value(values, "credential_type", static_cast<std::int64_t>(record.credential_type.value()));

@@ -35,9 +35,8 @@ Result<AddAccountServerData> AddAccountHandler::ConvertToServerData(
 }
 
 Result<void> AddAccountHandler::ValidateParams(AddAccountServerData& server_data) {
-  if (OptionalStringEmpty(server_data.account.tenant_id) || OptionalStringEmpty(server_data.account.account_id) ||
-      server_data.password.empty()) {
-    return Result<void>{ErrorCode::kInternalError, "tenant_id, account_id and password are required"};
+  if (OptionalStringEmpty(server_data.account.account_id) || server_data.password.empty()) {
+    return Result<void>{ErrorCode::kInternalError, "account_id and password are required"};
   }
   return Result<void>{ErrorCode::kSuccess, "success"};
 }
@@ -61,7 +60,6 @@ Result<void> AddAccountHandler::ExecuteBusiness(AddAccountServerData& server_dat
 
   // 1. 查重
   qtrade::framework::dao::TradingAccountRecord key;
-  key.tenant_id = server_data.account.tenant_id;
   key.account_id = server_data.account.account_id;
   const auto exists = trading_dao.Count(*connection, key);
   if (exists.error_code != ErrorCode::kSuccess) {
@@ -90,7 +88,6 @@ Result<void> AddAccountHandler::ExecuteBusiness(AddAccountServerData& server_dat
 
   // 4. 写入 account_credential
   qtrade::framework::dao::AccountCredentialRecord credential_row;
-  credential_row.tenant_id = server_data.account.tenant_id;
   credential_row.account_id = server_data.account.account_id;
   credential_row.credential_type = qtrade::framework::dao::CredentialType::kPassword;
   credential_row.key_id = key_id;

@@ -13,12 +13,11 @@ namespace {
 /// @brief 建表 SQL 脚本
 const std::string kCreateTableSql = R"(
 CREATE TABLE IF NOT EXISTS trading_account (
-  tenant_id TEXT NOT NULL COMMENT '租户 ID',
-  account_id TEXT NOT NULL COMMENT '交易账户 ID',
+  account_id TEXT NOT NULL COMMENT '交易账户 ID（全局唯一）',
   broker_id TEXT NOT NULL COMMENT '券商 ID',
   connection_string TEXT NOT NULL COMMENT '交易通道连接串',
   status TEXT NOT NULL COMMENT '账户状态（如 active / disabled）',
-  PRIMARY KEY (tenant_id, account_id)
+  PRIMARY KEY (account_id)
 );
 )";
 
@@ -55,7 +54,6 @@ const std::vector<std::string>& TradingAccount::GetIndexSqls() const {
 /// @brief 将 TradingAccountRecord 转为 KeyValues
 KeyValues BuildTradingAccountValues(const TradingAccountRecord& record) {
   KeyValues values;
-  AddTextValue(values, "tenant_id", record.tenant_id);
   AddTextValue(values, "account_id", record.account_id);
   AddTextValue(values, "broker_id", record.broker_id);
   AddTextValue(values, "connection_string", record.connection_string);

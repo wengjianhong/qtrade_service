@@ -19,9 +19,7 @@ namespace qtrade::service {
 
 /// @brief GetCredential 管道内业务数据
 struct GetCredentialServerData {
-  /// 租户 ID
-  std::string tenant_id;
-  /// 交易账户号
+  /// 交易账户号（全局唯一）
   std::string account_id;
   /// 引擎实例 ID（用于审计日志）
   std::string engine_id;

@@ -1,7 +1,8 @@
 // @file      account_risk.proto
 // @brief     账户级硬风控与订单预占 gRPC 接口定义
 // @details   E 段：引擎出站 ReserveOrder / ReleaseOrder / GetReservation；
-//            按账户串行裁决额度预占与释放，与 config-service 实例级弱一致风险预算互补
+//            按账户串行裁决额度预占与释放，与 config-service 实例级弱一致风险预算互补；
+//            account_id 为全局唯一业务键
 // @author    wengjianhong
 // @date      2026-07-15
 // @copyright CC BY-NC-SA 4.0
@@ -13,28 +14,26 @@ import "common/v1/meta.proto";
 
 option cc_enable_arenas = true;
 
-// 账户硬风控策略（租户 + 账户维度）
+// 账户硬风控策略（account_id 全局唯一）
 message AccountRiskPolicy {
-    // 租户标识
-    string tenant_id = 1;
-    // 交易账户号
-    string account_id = 2;
+    // 交易账户号（全局唯一）
+    string account_id = 1;
     // 策略版本；引擎 Reserve 时可携带以校验一致性
-    uint64 version = 3;
+    uint64 version = 2;
     // 策略失效时间（Unix 毫秒）；0 表示由服务端默认 TTL 决定
-    int64 valid_until_unix_ms = 4;
+    int64 valid_until_unix_ms = 3;
     // 最大名义敞口；0 表示不限制
-    double max_notional = 5;
+    double max_notional = 4;
     // 最大保证金占用；0 表示不限制
-    double max_margin = 6;
+    double max_margin = 5;
     // 最大总敞口；0 表示不限制
-    double max_gross_exposure = 7;
+    double max_gross_exposure = 6;
     // 最大未完成订单数；0 表示不限制
-    uint64 max_open_orders = 8;
+    uint64 max_open_orders = 7;
     // 安全缓冲，从名义/保证金上限中预留
-    double safety_buffer = 9;
+    double safety_buffer = 8;
     // 是否启用该账户硬风控
-    bool enabled = 10;
+    bool enabled = 9;
 }
 
 // 订单意图（预占时由引擎提交）
@@ -63,9 +62,9 @@ message OrderIntent {
 message ReserveOrderRequest {
     // 统一请求链路元数据
     qtrade.common.meta.v1.RequestMeta meta = 1;
-    // 租户标识
-    string tenant_id = 2;
-    // 交易账户号
+    reserved 2;
+    reserved "tenant_id";
+    // 交易账户号（全局唯一）
     string account_id = 3;
     // 订单意图
     OrderIntent intent = 4;
@@ -121,9 +120,9 @@ message ReleaseOrderRequest {
         // 预占已过期
         EXPIRED = 5;
     }
-    // 租户标识
-    string tenant_id = 2;
-    // 交易账户号
+    reserved 2;
+    reserved "tenant_id";
+    // 交易账户号（全局唯一）
     string account_id = 3;
     // 全局订单 ID
     string order_id = 4;
@@ -149,9 +148,9 @@ message ReleaseOrderResponse {
 message ListActiveReservationsRequest {
     // 统一请求链路元数据
     qtrade.common.meta.v1.RequestMeta meta = 1;
-    // 租户标识
-    string tenant_id = 2;
-    // 交易账户号
+    reserved 2;
+    reserved "tenant_id";
+    // 交易账户号（全局唯一）
     string account_id = 3;
 }
 
@@ -171,9 +170,9 @@ message Reservation {
 message GetReservationRequest {
     // 统一请求链路元数据
     qtrade.common.meta.v1.RequestMeta meta = 1;
-    // 租户标识
-    string tenant_id = 2;
-    // 交易账户号
+    reserved 2;
+    reserved "tenant_id";
+    // 交易账户号（全局唯一）
     string account_id = 3;
     // 全局订单 ID
     string order_id = 4;
@@ -199,9 +198,9 @@ message ListActiveReservationsResponse {
 message GetAccountRiskPolicyRequest {
     // 统一请求链路元数据
     qtrade.common.meta.v1.RequestMeta meta = 1;
-    // 租户标识
-    string tenant_id = 2;
-    // 交易账户号
+    reserved 2;
+    reserved "tenant_id";
+    // 交易账户号（全局唯一）
     string account_id = 3;
 }
 
