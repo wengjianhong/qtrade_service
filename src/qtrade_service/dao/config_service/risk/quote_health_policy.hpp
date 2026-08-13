@@ -31,8 +31,8 @@ struct QuoteHealthPolicyRecord {
   std::optional<std::uint64_t> version;
   /// 行情延迟上限（毫秒）
   std::optional<std::int64_t> max_quote_latency_ms;
-  /// 行情时间戳陈旧上限（毫秒）
-  std::optional<std::int64_t> max_stale_age_ms;
+  /// 最后一笔有效 Tick 允许的最大静默时间（毫秒）
+  std::optional<std::int64_t> quote_max_stale_ms;
   /// 是否允许序号缺口继续交易
   std::optional<bool> allow_sequence_gap;
   /// 行情源切换期间是否拒绝新开仓

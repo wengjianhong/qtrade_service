@@ -78,6 +78,8 @@ message EngineConfig {
     string quote_connection_string = 11;
     // 配置中心单调递增版本，用于拒绝旧配置和断线续传
     uint64 version = 12;
+    // 最后一笔有效 Tick 允许的最大静默时间（毫秒）；0 表示使用引擎默认值
+    int32 quote_max_stale_ms = 13;
 }
 
 // 获取引擎配置请求

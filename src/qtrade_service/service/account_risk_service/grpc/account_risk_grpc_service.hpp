@@ -38,9 +38,9 @@ class AccountRiskGrpcService final : public qtrade::account_risk::v1::AccountRis
   /// @param request 查询请求
   /// @param response 预占状态
   /// @return 找到返回 OK，不存在返回 NOT_FOUND
-  grpc::Status GetReservation(grpc::ServerContext* context,
-                              const qtrade::account_risk::v1::GetReservationRequest* request,
-                              qtrade::account_risk::v1::GetReservationResponse* response) override;
+  grpc::Status QueryReservation(grpc::ServerContext* context,
+                                const qtrade::account_risk::v1::GetReservationRequest* request,
+                                qtrade::account_risk::v1::GetReservationResponse* response) override;
 
   /// @brief 释放账户预占
   /// @param context gRPC 上下文

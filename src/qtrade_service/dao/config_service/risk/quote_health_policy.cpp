@@ -16,7 +16,7 @@ CREATE TABLE IF NOT EXISTS quote_health_policy (
   instrument_id TEXT NOT NULL COMMENT '品种 ID；空串表示引擎缺省策略',
   version BIGINT NOT NULL COMMENT '策略配置版本',
   max_quote_latency_ms BIGINT NOT NULL COMMENT '行情延迟上限（毫秒）',
-  max_stale_age_ms BIGINT NOT NULL COMMENT '行情时间戳陈旧上限（毫秒）',
+  quote_max_stale_ms BIGINT NOT NULL COMMENT '最后一笔有效 Tick 允许的最大静默时间（毫秒）',
   allow_sequence_gap BOOLEAN NOT NULL COMMENT '是否允许序号缺口继续交易',
   reject_on_failover BOOLEAN NOT NULL COMMENT '行情源切换期间是否拒绝新开仓',
   reject_new_open_on_unhealthy BOOLEAN NOT NULL COMMENT '不健康时是否拒绝受影响品种新开仓',

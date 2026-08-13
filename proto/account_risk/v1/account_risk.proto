@@ -1,6 +1,6 @@
 // @file      account_risk.proto
 // @brief     账户级硬风控与订单预占 gRPC 接口定义
-// @details   E 段：引擎出站 ReserveOrder / ReleaseOrder / GetReservation；
+// @details   E 段：引擎出站 ReserveOrder / ReleaseOrder / QueryReservation；
 //            按账户串行裁决额度预占与释放，与 config-service 实例级弱一致风险预算互补；
 //            account_id 为全局唯一业务键
 // @author    wengjianhong
@@ -86,7 +86,7 @@ message ReserveOrderResponse {
         APPROVED = 1;
         // 拒绝预占
         REJECTED = 2;
-        // 结果未知（如超时）；引擎须 GetReservation 反查
+        // 结果未知（如超时）；引擎须 QueryReservation 反查
         UNKNOWN = 3;
     }
     // 裁决结果
@@ -233,7 +233,7 @@ service AccountRiskService {
     // 释放账户预占
     rpc ReleaseOrder(ReleaseOrderRequest) returns (ReleaseOrderResponse);
     // 查询指定订单的预占状态
-    rpc GetReservation(GetReservationRequest) returns (GetReservationResponse);
+    rpc QueryReservation(GetReservationRequest) returns (GetReservationResponse);
     // 列出指定账户上的有效预占
     rpc ListActiveReservations(ListActiveReservationsRequest) returns (ListActiveReservationsResponse);
     // 查询账户硬风控策略

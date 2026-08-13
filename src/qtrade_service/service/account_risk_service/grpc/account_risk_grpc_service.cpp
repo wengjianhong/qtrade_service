@@ -172,9 +172,9 @@ grpc::Status AccountRiskGrpcService::ReserveOrder(grpc::ServerContext*,
   return grpc::Status::OK;
 }
 
-grpc::Status AccountRiskGrpcService::GetReservation(grpc::ServerContext*,
-                                                    const qtrade::account_risk::v1::GetReservationRequest* request,
-                                                    qtrade::account_risk::v1::GetReservationResponse* response) {
+grpc::Status AccountRiskGrpcService::QueryReservation(grpc::ServerContext*,
+                                                      const qtrade::account_risk::v1::GetReservationRequest* request,
+                                                      qtrade::account_risk::v1::GetReservationResponse* response) {
   if (request->account_id().empty() || request->order_id().empty()) {
     return InvalidArgument("account_id and order_id are required");
   }
