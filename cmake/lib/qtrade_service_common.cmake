@@ -24,6 +24,7 @@ target_include_directories(qtrade_service_common PUBLIC
 
 target_link_libraries(qtrade_service_common PUBLIC
   qtrade_engine::qtrade_engine
+  qtrade_common::qtrade_common
   Threads::Threads
   spdlog::spdlog
   qtrade_service_proto

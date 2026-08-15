@@ -31,6 +31,7 @@ find_package(Threads REQUIRED)
 find_package(spdlog 1.16.0 REQUIRED)
 find_package(nlohmann_json 3.11.0 REQUIRED)
 find_package(cpputils 0.1.0 REQUIRED CONFIG)
+find_package(qtrade_common 0.1.0 REQUIRED CONFIG)
 
 # qtrade_engine public headers + libraries (installed package only; no reverse dependency)
 find_package(qtrade_engine REQUIRED CONFIG)
