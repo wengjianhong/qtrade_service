@@ -40,18 +40,18 @@ message StrategyConfig {
     optional double take_profit_percent = 11;
 }
 
-// 实例级弱一致风险预算。账户硬限制由 account-risk-service 独立裁决。
-message RiskBudget {
+// 引擎实例共享风控配置。账户硬限制由 account-risk-service 独立裁决。
+message InstanceRiskConfig {
     // 配置中心单调递增版本，用于拒绝旧配置和断线续传
     uint64 version = 1;
-    // 最大名义价值
-    double max_notional = 2;
-    // 最大保证金
-    double max_margin = 3;
-    // 最大开仓订单数
+    // 单笔最大数量；0 表示不限制
+    int64 max_order_volume = 2;
+    // 单笔最大名义金额；0 表示不限制
+    double max_order_notional = 3;
+    // 最大活动订单数；0 表示不限制
     uint64 max_open_orders = 4;
-    // 安全缓冲
-    double safety_buffer = 5;
+    // 最大待成交订单名义金额；0 表示不限制
+    double max_pending_notional = 5;
 }
 
 // 引擎实例配置（按 engine_id 分片）
@@ -64,22 +64,22 @@ message EngineConfig {
     string account_id = 3;
     // 主行情源
     string quote_source = 4;
-    // 策略绑定列表
-    repeated StrategyConfig strategies = 5;
     // 备用行情源；空表示不启用自动切换
-    string quote_failover = 6;
-    // 实例级弱一致风险预算
-    RiskBudget risk_budget = 7;
+    string quote_failover = 5;
     // 配置失效时间（Unix 毫秒）；0 表示由服务端默认 TTL 决定
-    int64 valid_until_unix_ms = 9;
+    int64 valid_until_unix_ms = 6;
     // 交易适配器类型：mock 或 emt；由控制面和界面维护
-    string execution_adapter = 10;
+    string execution_adapter = 7;
     // 主行情源连接串；例如 mock://localhost 或厂商连接地址
-    string quote_connection_string = 11;
+    string quote_connection_string = 8;
     // 配置中心单调递增版本，用于拒绝旧配置和断线续传
-    uint64 version = 12;
+    uint64 version = 9;
     // 最后一笔有效 Tick 允许的最大静默时间（毫秒）；0 表示使用引擎默认值
-    int32 quote_max_stale_ms = 13;
+    int32 quote_max_stale_ms = 10;
+    // 策略绑定列表
+    repeated StrategyConfig strategies = 11;
+    // 实例级共享风控配置
+    InstanceRiskConfig instance_risk = 12;
 }
 
 // 获取引擎配置请求
